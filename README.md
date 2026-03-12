@@ -41,3 +41,61 @@ Here are a couple of thoughts about the domain that could influence your respons
 * What might happen if the client needs to change the random divisor?
 * What might happen if the client needs to add another special case (like the random twist)?
 * What might happen if sales closes a new client in France?
+
+---
+
+# Implementation
+
+
+## Install 
+
+### Prerequirements
+
+* Python 3.11
+* [UV package manager](https://docs.astral.sh/uv/getting-started/installation/)
+
+### Setup
+
+```bash
+
+uv venv -p 3.11
+
+source .venv/bin/activate
+
+uv sync
+
+```
+
+### Run
+
+```bash
+
+python cr.py --input data.csv
+
+# In order to see the result
+cat result.out
+
+# Or define the output filename as well
+python cr.py --input data.csv --output data.out
+
+cat data.out
+
+```
+
+
+### Test
+
+```bash
+
+python -m pytest ./tests
+
+```
+
+### Typechecker/Lint/Format
+
+
+```bash
+
+make qa
+
+```
