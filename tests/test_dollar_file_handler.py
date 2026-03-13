@@ -29,6 +29,8 @@ def test_valid_file(data):
         "\n3 pennies",
     ]
     
+    # Check if it is not reset
+    mock_file.return_value.truncate.assert_not_called()
 
 @pytest.mark.parametrize(
     [
@@ -49,6 +51,8 @@ def test_invalid_file_expected_two_attributes(data):
     with pytest.raises(ExceptionGroup), patch.object(filesystem, "open", mock_file):
         dyn_handler.run(input="input", output="output")
 
+    # Verify if it was cleaning up
+    mock_file.return_value.truncate.assert_called_once_with(0)
 
 
 def test_invalid_file_expected_float():
@@ -58,3 +62,6 @@ def test_invalid_file_expected_float():
 
     with pytest.raises(ExceptionGroup), patch.object(filesystem, "open", mock_file):
         dyn_handler.run(input="input", output="output")
+
+    # Verify if it was cleaning up
+    mock_file.return_value.truncate.assert_called_once_with(0)

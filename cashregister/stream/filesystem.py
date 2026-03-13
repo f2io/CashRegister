@@ -14,12 +14,15 @@ class PipelineTransactionFile(IPipeline[Transaction, Change], IPipelineInfo):
         input: str,
         output: str,
         input_sep=SEPARATOR,
+        output_discard_if_error=True,
     ):
         # TextIOWrapper
         self.input = open(input, "r")
         self.input_sep = input_sep
         self.output = open(output, "w")
         self.output_first_line = True
+        self.output_discard_if_error = output_discard_if_error
+
         self.current_line = 0
 
     def __enter__(self):
@@ -27,6 +30,10 @@ class PipelineTransactionFile(IPipeline[Transaction, Change], IPipelineInfo):
 
     def __exit__(self, exc_type, exc, tb):
         self.input.close()
+
+        # Clean up
+        if exc_type is not None and self.output_discard_if_error:
+            self.output.truncate(0)
         self.output.close()
 
     def read(self) -> Transaction | None:
