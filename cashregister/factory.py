@@ -10,7 +10,7 @@ class DenominationFactory:
         self.dollar = DollarDenominator()
         self.random_dollar = DollarDenominatorWithRandomOrder()
 
-    def build_dollar_denominator_with_random_case(self) -> DualDenominatorHandler:
+    def create_dollar_denominator_with_random_case(self) -> DualDenominatorHandler:
         """Create a denominator with dollar descrimination and random selection when owed is divided by 3"""
 
         return DualDenominatorHandler(
@@ -19,4 +19,4 @@ class DenominationFactory:
         )
 
 
-builder = DenominationFactory()
+creator = DenominationFactory()

@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import mock_open, patch
 
 from cashregister.stream import filesystem
-from cashregister.factory import builder
+from cashregister.factory import creator
 
 
 @pytest.mark.parametrize(
@@ -15,7 +15,7 @@ from cashregister.factory import builder
     ],
 )
 def test_valid_file(data):
-    dyn_handler = builder.build_dollar_denominator_with_random_case()
+    dyn_handler = creator.create_dollar_denominator_with_random_case()
 
     mock_file = mock_open(read_data=data)
 
@@ -28,7 +28,7 @@ def test_valid_file(data):
         "3 quarters,1 dime,3 pennies",
         "\n3 pennies",
     ]
-
+    
 
 @pytest.mark.parametrize(
     [
@@ -42,18 +42,19 @@ def test_valid_file(data):
     ],
 )
 def test_invalid_file_expected_two_attributes(data):
-    dyn_handler = builder.build_dollar_denominator_with_random_case()
+    dyn_handler = creator.create_dollar_denominator_with_random_case()
 
     mock_file = mock_open(read_data=data)
 
-    with pytest.raises(AssertionError), patch.object(filesystem, "open", mock_file):
+    with pytest.raises(ExceptionGroup), patch.object(filesystem, "open", mock_file):
         dyn_handler.run(input="input", output="output")
 
 
+
 def test_invalid_file_expected_float():
-    dyn_handler = builder.build_dollar_denominator_with_random_case()
+    dyn_handler = creator.create_dollar_denominator_with_random_case()
 
     mock_file = mock_open(read_data="2.12,3.00\n1.97,a\n")
 
-    with pytest.raises(ValueError), patch.object(filesystem, "open", mock_file):
+    with pytest.raises(ExceptionGroup), patch.object(filesystem, "open", mock_file):
         dyn_handler.run(input="input", output="output")

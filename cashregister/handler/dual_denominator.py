@@ -19,8 +19,6 @@ class DualDenominatorHandler:
         denominator: Denominator,
         denominator_owed_divided_by_3: Denominator,
     ):
-        # self.dollar = DollarDenominator()
-        # self.random_dollar = DollarDenominatorWithRandomOrder()
         self.dollar = denominator
         self.random_dollar = denominator_owed_divided_by_3
 
@@ -37,8 +35,8 @@ class DualDenominatorHandler:
             input[str]: filename with transaction
         """
         with PipelineTransactionFile(input=input, output=output) as pipeline:
-            tx = pipeline.read()
             try:
+                tx = pipeline.read()
                 while tx:
                     denominator = self.get_denominator(tx)
                     logger.info(
@@ -52,7 +50,10 @@ class DualDenominatorHandler:
                     tx = pipeline.read()
 
             except Exception as exc:
-                logger.error(f"Error({pipeline.get_info()}): {exc}")
+                info = pipeline.get_info()
 
-                # propagate
-                raise
+                # In case is using OTEL to export log
+                logger.error(f"Error({info}): {str(exc)}", exc_info=exc)
+
+                # Enrich and propagate inner error
+                raise ExceptionGroup(f"[handler] {info}", [exc])
