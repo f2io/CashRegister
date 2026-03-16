@@ -1,6 +1,7 @@
 from cashregister.denomination.change import Change
 from cashregister.stream.pipeline import ITraceablePipelineFile
 from cashregister.handler.transaction import Transaction
+from cashregister.exceptions.parser import InvalidEntryTransactionError
 
 
 class PipelineTransactionFile(ITraceablePipelineFile[Transaction, Change]):
@@ -37,7 +38,14 @@ class PipelineTransactionFile(ITraceablePipelineFile[Transaction, Change]):
         self.output.close()
 
     def read(self) -> Transaction | None:
-        """Parse transaction"""
+        """Parse transaction
+
+        Returns:
+            Transaction: return a transaction from decoding string line
+
+        Raises:
+            InvalidEntryTransactionError: When the row does not have expected number of columns.
+        """
         line = self.input.readline()
         if not line:
             return None
@@ -49,7 +57,11 @@ class PipelineTransactionFile(ITraceablePipelineFile[Transaction, Change]):
             self.input_sep
         )
 
-        assert len(tx_input) == 2, f"Expected 2 attributes per line, got:{tx_input}"
+        # Error handler
+        if len(tx_input) != 2:
+            raise InvalidEntryTransactionError(
+                f"Expected 2 attributes per line, got:{tx_input}"
+            )
 
         return Transaction.from_string(tx_input[0], tx_input[1])
 

@@ -1,6 +1,10 @@
 import logging
 
 from cashregister.denomination.denominator import Denominator
+from cashregister.exceptions.exception import (
+    CashRegisteExceptionGroup,
+    CashRegisterError,
+)
 from cashregister.stream.filesystem import PipelineTransactionFile
 from cashregister.handler.transaction import Transaction
 from cashregister.util.division import Division
@@ -19,15 +23,15 @@ class DualDenominatorHandler:
         denominator: Denominator,
         denominator_owed_divided_by_3: Denominator,
     ):
-        self.dollar = denominator
-        self.random_dollar = denominator_owed_divided_by_3
+        self.denominator = denominator
+        self.random_denominator = denominator_owed_divided_by_3
 
     def get_denominator(self, tx: Transaction) -> Denominator:
         """Denominator handler based on transaction rule"""
         if Division.is_divided_by(tx.owed):
-            return self.random_dollar
+            return self.random_denominator
 
-        return self.dollar
+        return self.denominator
 
     def run(self, input: str, output: str):
         """
@@ -48,6 +52,12 @@ class DualDenominatorHandler:
 
                     # Next
                     tx = pipeline.read()
+            except CashRegisterError as exc:
+                info = pipeline.get_info()
+                exc_info = f"{info}: {str(exc)}"
+
+                # Propagate/Enrich known-error
+                raise CashRegisteExceptionGroup(exc_info, [exc])
 
             except Exception as exc:
                 info = pipeline.get_info()
@@ -55,5 +65,5 @@ class DualDenominatorHandler:
                 # In case is using OTEL to export log
                 logger.error(f"Error({info}): {str(exc)}", exc_info=exc)
 
-                # Enrich and propagate inner error
-                raise ExceptionGroup(f"[handler] {info}", [exc])
+                # Propagate unknown
+                raise

@@ -1,6 +1,8 @@
 from dataclasses import dataclass, field
 from typing import Self
 
+from cashregister.exceptions.parser import InvalidFieldTypeTransactionError
+
 
 @dataclass
 class Transaction:
@@ -20,15 +22,22 @@ class Transaction:
 
     @classmethod
     def from_string(cls, owed: str, paid: str) -> Self:
-        """ "
-        creates a Transaction object from string values of owed and paid
+        """creates a Transaction object from string values of owed and paid
+
         args:
             owed: string representation of the amount owed
             paid: string representation of the amount paid
+
         returns:
-            Transaction object with owed and paid as floats
+            Transaction: object with owed and paid as floats
         """
-        float_owed = float(owed)
-        float_paid = float(paid)
+        try:
+            float_owed = float(owed)
+            float_paid = float(paid)
+        except ValueError as exc:
+            # Error handler
+            raise InvalidFieldTypeTransactionError(
+                f"Expected float values, got owed={owed}, paid={paid}, error:{str(exc)}"
+            )
 
         return cls(float_owed, float_paid)

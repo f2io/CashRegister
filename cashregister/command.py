@@ -2,6 +2,8 @@ import argparse
 from pathlib import Path
 from typing import Tuple
 
+from cashregister.exceptions.command import FileNotFoundError
+
 parser = argparse.ArgumentParser()
 parser.add_argument(
     "--input",
@@ -20,19 +22,19 @@ parser.add_argument(
 def parse_cli() -> Tuple[str, str]:
     """Get input and output file from command-line, and verify if the files exist.
 
-    Raises:
-        ValueError: input file does not exist
-        ValueError: output file already exists
-
     Returns:
        Tuple[str, str]: input and output filename
+
+    Raises:
+        FileNotFoundError: input file does not exist
+
     """
     cli_args = parser.parse_args()
     input = Path(cli_args.input)
     output = Path(cli_args.output)
 
     if not input.exists():
-        raise ValueError(f"Input file does not exist: {input}")
+        raise FileNotFoundError(f"Input file does not exist: {input}")
 
     # TODO: review
     # if output.exists():
