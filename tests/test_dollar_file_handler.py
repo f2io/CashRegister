@@ -28,9 +28,10 @@ def test_valid_file(data):
         "3 quarters,1 dime,3 pennies",
         "\n3 pennies",
     ]
-    
+
     # Check if it is not reset
     mock_file.return_value.truncate.assert_not_called()
+
 
 @pytest.mark.parametrize(
     [

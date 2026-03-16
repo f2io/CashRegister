@@ -1,9 +1,9 @@
 from cashregister.denomination.change import Change
-from cashregister.stream.pipeline import IPipeline, IPipelineInfo
+from cashregister.stream.pipeline import ITraceablePipelineFile
 from cashregister.handler.transaction import Transaction
 
 
-class PipelineTransactionFile(IPipeline[Transaction, Change], IPipelineInfo):
+class PipelineTransactionFile(ITraceablePipelineFile[Transaction, Change]):
     """Pipeline to decode transaction and encode change using filesystem."""
 
     NEWLINE = "\n"

@@ -37,3 +37,15 @@ class IPipeline(Generic[TInput, TOutput]):
         """
 
         raise NotImplementedError()
+
+
+class ITraceablePipelineFile(
+    Generic[TInput, TOutput], IPipeline[TInput, TOutput], IPipelineInfo
+):
+    @abstractmethod
+    def __enter__(self):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def __exit__(self, exc_type, exc, tb):
+        raise NotImplementedError()
