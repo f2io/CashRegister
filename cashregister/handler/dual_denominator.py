@@ -2,7 +2,7 @@ import logging
 
 from cashregister.denomination.denominator import Denominator
 from cashregister.exceptions.exception import (
-    CashRegisteExceptionGroup,
+    CashRegisterExceptionGroup,
     CashRegisterError,
 )
 from cashregister.stream.filesystem import PipelineTransactionFile
@@ -57,7 +57,7 @@ class DualDenominatorHandler:
                 exc_info = f"{info}: {str(exc)}"
 
                 # Propagate/Enrich known-error
-                raise CashRegisteExceptionGroup(exc_info, [exc])
+                raise CashRegisterExceptionGroup(exc_info, [exc])
 
             except Exception as exc:
                 info = pipeline.get_info()

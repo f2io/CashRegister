@@ -4,7 +4,7 @@ import logging
 from cashregister.command import parse_cli
 from cashregister.exceptions.command import CashRegisterCommandError
 from cashregister.exceptions.exception import (
-    CashRegisteExceptionGroup,
+    CashRegisterExceptionGroup,
 )
 from cashregister.factory import creator
 
@@ -20,7 +20,7 @@ def main():
     except CashRegisterCommandError as exc:
         # Command-line invalid
         print(f"Invalid command-line parameter: {str(exc)}", file=sys.stderr)
-    except CashRegisteExceptionGroup as gexc:
+    except CashRegisterExceptionGroup as gexc:
         # Print out error details
         print(
             f"Error pre-condition violated: {str(gexc)}",

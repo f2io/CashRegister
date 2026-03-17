@@ -4,7 +4,7 @@ class CashRegisterError(Exception):
     pass
 
 
-class CashRegisteExceptionGroup(ExceptionGroup):
+class CashRegisterExceptionGroup(ExceptionGroup):
     """Enriched CashRegister error"""
 
     pass

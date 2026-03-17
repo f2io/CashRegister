@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import mock_open, patch
 
-from cashregister.exceptions.exception import CashRegisteExceptionGroup
+from cashregister.exceptions.exception import CashRegisterExceptionGroup
 from cashregister.stream import filesystem
 from cashregister.factory import creator
 
@@ -51,7 +51,7 @@ def test_invalid_file_expected_two_attributes(data):
     mock_file = mock_open(read_data=data)
 
     with (
-        pytest.raises(CashRegisteExceptionGroup),
+        pytest.raises(CashRegisterExceptionGroup),
         patch.object(filesystem, "open", mock_file),
     ):
         dyn_handler.run(input="input", output="output")
@@ -66,7 +66,7 @@ def test_invalid_file_expected_float():
     mock_file = mock_open(read_data="2.12,3.00\n1.97,a\n")
 
     with (
-        pytest.raises(CashRegisteExceptionGroup),
+        pytest.raises(CashRegisterExceptionGroup),
         patch.object(filesystem, "open", mock_file),
     ):
         dyn_handler.run(input="input", output="output")
