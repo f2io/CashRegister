@@ -11,10 +11,10 @@ from cashregister.denomination.dollar.converter import (
 from cashregister.handler.transaction import Transaction
 
 
-# --- Constructor guard: no PennyConverter ---
+# --- Constructor guard: safeguard_converter not in converters ---
 
 
-def test_init_raises_without_penny_converter():
+def test_init_raises_when_safeguard_converter_not_in_converters():
     converters: list[IValueConverter] = [DollarConverter(), QuarterConverter()]
     with pytest.raises(AssertionError):
         DollarDenominatorWithRandomOrder(converters=converters)

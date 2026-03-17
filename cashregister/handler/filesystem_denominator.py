@@ -5,18 +5,16 @@ from cashregister.exceptions.exception import (
     CashRegisterExceptionGroup,
     CashRegisterError,
 )
-from cashregister.stream.filesystem import PipelineTransactionFile
+from cashregister.denomination.denominator_selector import IDenominatorSelector
 from cashregister.handler.transaction import Transaction
+from cashregister.stream.filesystem import PipelineTransactionFile
 from cashregister.util.division import Division
 
 logger = logging.getLogger(__name__)
 
 
-class DualDenominatorHandler:
-    """
-    Handler responsible to apply random denomination if the owed value is divided by 3.
-    Using FileSytem as input and output.
-    """
+class DivThreeDenominatorSelector(IDenominatorSelector[Transaction]):
+    """Selects the random denominator when owed is divisible by 3."""
 
     def __init__(
         self,
@@ -26,12 +24,21 @@ class DualDenominatorHandler:
         self.denominator = denominator
         self.random_denominator = denominator_owed_divided_by_3
 
-    def get_denominator(self, tx: Transaction) -> Denominator:
-        """Denominator handler based on transaction rule"""
+    def select(self, tx: Transaction) -> Denominator:
         if Division.is_divided_by(tx.owed):
             return self.random_denominator
 
         return self.denominator
+
+
+class AutoSelectionDenominatorHandler:
+    """
+    Handler responsible to apply denomination based on selector strategy.
+    Using FileSytem as input and output.
+    """
+
+    def __init__(self, selector: IDenominatorSelector):
+        self.selector = selector
 
     def run(self, input: str, output: str):
         """
@@ -42,7 +49,7 @@ class DualDenominatorHandler:
             try:
                 tx = pipeline.read()
                 while tx:
-                    denominator = self.get_denominator(tx)
+                    denominator = self.selector.select(tx)
                     logger.info(
                         f"[selection] denominator={type(denominator)}, tx={str(tx)}"
                     )
