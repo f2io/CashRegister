@@ -11,3 +11,9 @@ class InvalidEntryTransactionError(CashRegisterError):  # ValueError
     """Error invalid rows"""
 
     pass
+
+
+class InvalidDenominationError(CashRegisterError):
+    """Error invalid denomination value"""
+
+    pass

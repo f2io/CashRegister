@@ -42,10 +42,6 @@ class Denominator(Generic[TOutputChange]):
         Return:
             TOutputChange: type change denomination.
         """
-        assert tx.paid > tx.owed, (
-            f"Paid: {tx.paid} must be greater than owed: {tx.owed}"
-        )
-
         orig_change = change = round(tx.paid - tx.owed, 2)
 
         denominator_value = {}

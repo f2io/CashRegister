@@ -18,6 +18,16 @@ class DollarDenomination:
     penny: int | None = field(default=None)
 
     def __post_init__(self):
+        """Validate denomination values after construction.
+
+        Raises:
+            AssertionError: if any denomination is non-positive or all are undefined.
+
+        Note:
+            These are safeguards for converter logic — values are produced by converters,
+            not user input. A violation indicates a misconfigured converter, not invalid
+            user data.
+        """
         assert not self.dollar or self.dollar > 0, (
             "dollar needs to be greater than zero"
         )
