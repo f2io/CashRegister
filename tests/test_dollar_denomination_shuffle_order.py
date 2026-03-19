@@ -36,9 +36,7 @@ def test_get_converters_raises_on_mismatched_length():
 
 
 def test_all_converters_enabled_matches_standard_denominator():
-    denomination = DollarDenominatorWithRandomOrder(
-        get_random_converters=lambda converters: [True] * len(converters)
-    )
+    denomination = DollarDenominatorWithRandomOrder(get_random_converters=lambda converters: [True] * len(converters))
     transaction = Transaction(owed=1.00, paid=2.41)
 
     result = denomination.process(tx=transaction)
@@ -53,9 +51,7 @@ def test_all_converters_enabled_matches_standard_denominator():
 
 
 def test_all_converters_enabled_plural_strings():
-    denomination = DollarDenominatorWithRandomOrder(
-        get_random_converters=lambda converters: [True] * len(converters)
-    )
+    denomination = DollarDenominatorWithRandomOrder(get_random_converters=lambda converters: [True] * len(converters))
     transaction = Transaction(owed=0.48, paid=3.00)
 
     result = denomination.process(tx=transaction)
@@ -70,9 +66,7 @@ def test_all_converters_enabled_plural_strings():
 
 
 def test_plural_dimes_and_pennies():
-    denomination = DollarDenominatorWithRandomOrder(
-        get_random_converters=lambda converters: [True] * len(converters)
-    )
+    denomination = DollarDenominatorWithRandomOrder(get_random_converters=lambda converters: [True] * len(converters))
     transaction = Transaction(owed=0.78, paid=1.00)
 
     result = denomination.process(tx=transaction)

@@ -50,9 +50,7 @@ class AutoSelectionDenominatorHandler:
                 tx = pipeline.read()
                 while tx:
                     denominator = self.selector.select(tx)
-                    logger.info(
-                        f"[selection] denominator={type(denominator)}, tx={str(tx)}"
-                    )
+                    logger.info(f"[selection] denominator={type(denominator)}, tx={str(tx)}")
 
                     change = denominator.process(tx)
                     pipeline.write(change)

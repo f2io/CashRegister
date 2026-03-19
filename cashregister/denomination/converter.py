@@ -16,9 +16,7 @@ class IValueConverter:
         raise NotImplementedError
 
     @abstractmethod
-    def convert(
-        self, value: float
-    ) -> Tuple[int, float]:  # denomination value and remaining
+    def convert(self, value: float) -> Tuple[int, float]:  # denomination value and remaining
         """Convert change value to a denomination
 
         Args:

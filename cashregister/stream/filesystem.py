@@ -53,15 +53,11 @@ class PipelineTransactionFile(ITraceablePipelineFile[Transaction, Change]):
         self.current_line += 1
 
         # Remove newline and split
-        tx_input = line.replace(PipelineTransactionFile.NEWLINE, "").split(
-            self.input_sep
-        )
+        tx_input = line.replace(PipelineTransactionFile.NEWLINE, "").split(self.input_sep)
 
         # Error handler
         if len(tx_input) != 2:
-            raise InvalidEntryTransactionError(
-                f"Expected 2 attributes per line, got:{tx_input}"
-            )
+            raise InvalidEntryTransactionError(f"Expected 2 attributes per line, got:{tx_input}")
 
         return Transaction.from_string(tx_input[0], tx_input[1])
 

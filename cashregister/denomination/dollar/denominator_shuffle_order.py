@@ -19,8 +19,7 @@ class DollarDenominatorWithRandomOrder(Denominator[DollarChange]):
         self,
         converters: list[IValueConverter] = standard_dollar_converters,
         safeguard_converter: type[IValueConverter] = PennyConverter,
-        get_random_converters: Callable[[list[IValueConverter]], list[bool]]
-        | None = None,
+        get_random_converters: Callable[[list[IValueConverter]], list[bool]] | None = None,
     ) -> None:
         """Dollar denomination with random denomination order.
 
@@ -37,9 +36,7 @@ class DollarDenominatorWithRandomOrder(Denominator[DollarChange]):
         self.converters = converters
         self._safeguard_type = safeguard_converter
         self._get_random_converters = get_random_converters or (
-            lambda converters: random.choices(
-                [True, False], weights=[50, 50], k=len(converters)
-            )
+            lambda converters: random.choices([True, False], weights=[50, 50], k=len(converters))
         )
 
     def get_converters(self) -> list[IValueConverter]:

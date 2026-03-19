@@ -7,9 +7,7 @@ from cashregister.denomination.dollar.converter import (
 
 
 class DollarDenominator(Denominator[DollarChange]):
-    def __init__(
-        self, converters: list[IValueConverter] = standard_dollar_converters
-    ) -> None:
+    def __init__(self, converters: list[IValueConverter] = standard_dollar_converters) -> None:
         """Dollar Denomination using standard converters(quarter, dime, ...)
 
         Args:

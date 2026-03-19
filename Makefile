@@ -16,5 +16,5 @@ typecheck:
 	@echo "Running type checks..."
 	ty check
 
-qa: lint format typecheck
+qa: format lint typecheck
 	@echo "All quality checks passed!"

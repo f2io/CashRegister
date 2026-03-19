@@ -14,7 +14,8 @@ class Division:
             bool: if it is divided or not
 
         Note:
-            module operator (%) like this one `(3.33 % 3) == 0` was return False, so this helper was created check this division.
+            module operator (%) like this one `(3.33 % 3) == 0` was return False,
+            so this helper was created check this division.
         """
         div_result = round(value / divisor, 2)
         proof_result = div_result * divisor

@@ -33,9 +33,7 @@ def test_dollar_denomination_case3():
 
 
 def test_dollar_denomination_random_order_with_all_converters_disabled():
-    denomination = DollarDenominatorWithRandomOrder(
-        get_random_converters=lambda converters: [False] * len(converters)
-    )
+    denomination = DollarDenominatorWithRandomOrder(get_random_converters=lambda converters: [False] * len(converters))
     transaction = Transaction(owed=3.33, paid=5.00)
 
     result = denomination.process(tx=transaction)
